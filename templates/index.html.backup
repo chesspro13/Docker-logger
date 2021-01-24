@@ -1,0 +1,109 @@
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style type="text/css">
+	.sidenav {
+	  height: 100%; /* Full-height: remove this if you want "auto" height */
+	  width: 160px; /* Set the width of the sidebar */
+	  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+	  z-index: 1; /* Stay on top */
+	  top: 0; /* Stay at the top */
+	  left: 0;
+	  background-color: #111; /* Black */
+	  overflow-x: hidden; /* Disable horizontal scroll */
+	  padding-top: 20px;
+	}
+
+/* The navigation menu links */
+	.sidenav a {
+	  padding: 6px 8px 6px 16px;
+	  text-decoration: none;
+	  font-size: 25px;
+	  color: #818181;
+	  display: block;
+	}
+
+	.description {
+		color: white;
+	}
+
+	.tab {
+		margin: auto;
+		width: 75%;
+		border: 3px solid green;
+		padding: 10px;
+	}
+
+	.log {
+		margin: auto;
+		width: 75%;
+		padding: 10px;
+		text-align: center;
+		text-size: 100px;
+	}
+
+	.logOutput {
+		height: 700px;
+		width: 75%;
+		border: 1px solid grey;
+		overflow: auto;
+		margin: auto;
+	}
+
+	.subDes {
+		text-align: right;
+		color: darkgrey;
+	}
+
+	.overview {
+	}
+</style>
+	<head>
+		<h1 class="log"> It's log! </h1>
+	</head>
+	<body>
+		<div class = "tab">
+			<form action="/" method="POST">
+				{% csrf_token %}
+				<button type="submit" name="con" class="tablink" value="7_Days">7 Days</button>
+				<button type="submit" name="con" class="tablink" value="Chores">Chores</button>
+				<button type="submit" name="con" class="tablink" value="Git">Git</button>
+				<button type="submit" name="con" class="tablink" value="Mumble">Mumble</button>
+				<button type="submit" name="con" class="tablink" value="Postgres">Postgres</button>
+				<button type="submit" name="con" class="tablink" value="Synapse">Synapse</button>
+				<button type="submit" name="con" class="tablink" value="Traefik">Traefik</button>
+				<button type="submit" name="con" class="tablink" value="Wiki">Wiki</button>
+			</form>
+		</div>
+
+
+		<div class="logOutput"> 
+			{% for i in data %}
+			{{i}}<br>
+			{% endfor %}
+		</div>
+	<script>
+		var d = document.createElement("p");
+		var l = document.createTextNode("fkjsd");
+		d.appendChild(l);
+		document.body.appendChild(d);
+
+
+		function getRefreshData(){
+			$.ajax({
+				type: "POST",
+				url: {% url 'data_refresh' %},
+				data: {
+//					csrfmiddlewaretoken: '{{ csrf_token }},
+					text: "This is my test view",
+				}
+				success: function(response)
+			});
+		}
+		setInterval(getRefreshData(),5*100);
+	</script>
+	</body>
+{% endblock %}
